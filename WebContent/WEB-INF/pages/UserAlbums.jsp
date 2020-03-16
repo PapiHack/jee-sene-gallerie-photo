@@ -44,7 +44,7 @@
 			        	<div class="col-md-6 col-lg-4">
 				        	<div class="card transform-on-hover">
 			                	<a class="lightbox" href="<c:url value="/uploads/${ album.images[0].fichierImage }" />">
-			                		<img src="<c:url value="/uploads/${ album.images[0].fichierImage }" />" style="width: 100%" alt="Card Image" class="card-img-top">
+			                		<img src="<c:url value="/uploads/${ album.images[0].fichierImage }" />" style="width: 100%; height: 250;" alt="Card Image" class="card-img-top">
 			                	</a>
 			                    <div class="card-body">
 			                    	<p class="pull-right">

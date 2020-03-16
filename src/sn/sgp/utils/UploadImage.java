@@ -35,8 +35,9 @@ public class UploadImage
 	public UploadImage(HttpServletRequest request)
 	{
 		this.request = request;
-		String upload = this.request.getServletContext().getRealPath("/uploads");
-		String uploadDirectory = new File(upload).getAbsolutePath();
+		// String upload = this.request.getServletContext().getRealPath("/uploads");
+		// String uploadDirectory = new File(upload).getAbsolutePath();
+		String uploadDirectory = this.request.getServletContext().getInitParameter("uploadDirectory");
 		File directory = new File(uploadDirectory);
 		if (!directory.exists())
 		{
