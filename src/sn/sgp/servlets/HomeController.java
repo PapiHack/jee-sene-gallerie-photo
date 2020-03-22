@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sn.sgp.beans.Album;
 import sn.sgp.beans.Compte;
 import sn.sgp.beans.User;
 import sn.sgp.managers.AlbumManager;
@@ -30,7 +31,7 @@ import sn.sgp.validators.RegisterValidator;
  */
 @SuppressWarnings("serial")
 @WebServlet(
-{ "/home", "/login", "/register", "/gallery", "/about" })
+{ "/home", "/login", "/register", "/gallery", "/about", "/gallery/images" })
 public class HomeController extends HttpServlet
 {
 	
@@ -48,16 +49,14 @@ public class HomeController extends HttpServlet
 	private static final String REGISTER_PAGE = "/WEB-INF/pages/Register.jsp";
 	private static final String ABOUT_PAGE = "/WEB-INF/pages/About.jsp";
 	private static final String GALLERY_PAGE = "/WEB-INF/pages/Gallery.jsp";
+	private static final String LIST_IMAGE_PAGE = "/WEB-INF/pages/ImageList.jsp";
+	private static final String GALLERY_URL = "/gallery";
 	
 	private static final String REDIRECT_URL_AFTER_LOGIN = "/user/home";
 	private static final String REDIRECT_URL_AFTER_REGISTER = "/login";
 	
 	private String path;
 	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		this.path = request.getServletPath();
@@ -85,16 +84,22 @@ public class HomeController extends HttpServlet
 				request.setAttribute("albums", this.albumManager.findAlbumByStatus(EnumAlbumStatus.publik));
 				this.getServletContext().getRequestDispatcher(GALLERY_PAGE).forward(request, response);
 				break;
+			case "/gallery/images":
+				String albumId = request.getParameter("album");
+				if (albumId == null || albumId.isEmpty())
+				{
+					response.sendRedirect(request.getContextPath() + GALLERY_URL);
+				}
+				Album album = this.albumManager.findById(Long.parseLong(albumId));
+				request.setAttribute("album", album);
+				request.getServletContext().getRequestDispatcher(LIST_IMAGE_PAGE).forward(request, response);
+				break;
 			default:
 				this.getServletContext().getRequestDispatcher(HOME_PAGE).forward(request, response);
 				break;
 		}
 	}
 	
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		this.path = request.getServletPath();

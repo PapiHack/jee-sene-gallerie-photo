@@ -21,19 +21,6 @@ public class LogoutController extends HttpServlet
 	
 	private static final String HOME_PAGE = "/home";
 	
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public LogoutController()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		request.getSession().invalidate();

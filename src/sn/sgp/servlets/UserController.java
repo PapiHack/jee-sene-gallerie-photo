@@ -48,19 +48,6 @@ public class UserController extends HttpServlet
 	
 	private CookieManager cookieManager;
 	
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public UserController()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		this.path = request.getServletPath();
@@ -146,10 +133,6 @@ public class UserController extends HttpServlet
 		}
 	}
 	
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		this.path = request.getServletPath();

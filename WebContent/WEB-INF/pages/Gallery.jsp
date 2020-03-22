@@ -32,17 +32,61 @@
 	        		<c:forEach items="${ albums }" var="album">
 			        	<div class="col-md-6 col-lg-4">
 				        	<div class="card transform-on-hover">
-			                	<a class="lightbox" href="<c:url value="/uploads/${ album.images[0].fichierImage }" />">
-			                		<img src="<c:url value="/uploads/${ album.images[0].fichierImage }" />" style="width: 100%; height: 250;" alt="Card Image" class="card-img-top">
+				        	<c:if test="${ sessionScope.user != null }">
+			                	<a class="lightbox" href="<c:url value="/user/album/images?album=${ album.id }" />">
+			                		<img src="<c:url value="/uploads/${ album.images[0].fichierImage }" />" style="width: 100%; height: 250px;" alt="<c:out value="${ album.description }" />" class="card-img-top">
 			                	</a>
+				        	</c:if>
+				        	<c:if test="${ sessionScope.user == null }">
+			                	<a class="lightbox" href="<c:url value="/gallery/images?album=${ album.id }" />">
+			                		<img src="<c:url value="/uploads/${ album.images[0].fichierImage }" />" style="width: 100%; height: 250px;" alt="<c:out value="${ album.description }"/>" class="card-img-top">
+			                	</a>
+				        	</c:if>
 			                    <div class="card-body">
 			                        <h6 class="card-title">
-			                        	<a href="#"><c:out value="${album.titre }" /></a>
+			                        	<a href="#" data-toggle="modal" data-target="#modal-<c:out value="${ album.id }" />"><c:out value="${album.titre }" /></a>
 			                        </h6>
 			                        <p class="text-muted card-text"><c:out value="${album.description }" /></p>
 			                    </div>
 							</div>
 			        	</div>
+			        	<!-- Modal -->
+						<div id="modal-<c:out value="${ album.id }" />" class="modal fade" role="dialog">
+						  <div class="modal-dialog">	
+						  
+						    <!-- Modal content-->
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal">&times;</button>
+						        <h4 class="modal-title">Informations de l'album</h4>
+						      </div>
+						      <div class="modal-body">
+						      	<table class="table table-striped">
+						      		<tr>
+						      			<th>Titre</th>
+						      			<th>Description</th>
+						      			<th>Statut</th>
+						      			<th>Propriétaire</th>
+						      			<th>Date de création</th>
+						      			<th>Images</th>
+						      		</tr>
+						      		<tr>
+						      			<td><c:out value="${ album.titre }" /></td>
+						      			<td><c:out value="${ album.description }" /></td>
+						      			<td><c:out value="${ album.statut == 'publik' ? 'Public' : 'Privé' }" /></td>
+						      			<td><c:out value="${ album.proprio.prenom } ${ album.proprio.nom }" /></td>
+						      			<td><c:out value="${ album.proprio.createdAt }"/></td>
+						      			<td><c:out value="${ album.images.size() }"/></td>
+						      		</tr>
+						      	</table>
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						      </div>
+						    </div>
+						
+						  </div>
+						</div>
 	        		</c:forEach>
 	        	</div>
 	        </c:if>

@@ -43,20 +43,57 @@
 	        		<c:forEach items="${ albums }" var="album">
 			        	<div class="col-md-6 col-lg-4">
 				        	<div class="card transform-on-hover">
-			                	<a class="lightbox" href="<c:url value="/uploads/${ album.images[0].fichierImage }" />">
-			                		<img src="<c:url value="/uploads/${ album.images[0].fichierImage }" />" style="width: 100%; height: 250;" alt="Card Image" class="card-img-top">
+			                	<a class="lightbox" href="<c:url value="/user/album/images?album=${ album.id }" />">
+			                		<img src="<c:url value="/uploads/${ album.images[0].fichierImage }" />" style="width: 100%; height: 250px;" alt="Card Image" class="card-img-top">
 			                	</a>
 			                    <div class="card-body">
 			                    	<p class="pull-right">
-			                        	<a href="#" class="btn btn-success" title="Ajouter une image à cet album"><i class="fa fa-plus fa fa-image"></i></a>
+			                        	<a href="<c:url value="/user/album/image/add?album=${ album.id }" />" class="btn btn-success" title="Ajouter une image à cet album"><i class="fa fa-plus fa fa-image"></i></a>
 			                        	<a href="#" class="btn btn-warning" title="Editer cet album"><i class="fa fa-edit"></i></a>
 			                        	<a href="<c:url value="/user/album/delete?album=${ album.id }" />" onclick="return confirm('Voulez-vous vraiment supprimer cet album ?');" class="btn btn-danger sup" title="Supprimer cet album"><i class="fa fa-trash"></i></a>
 			                        </p>
 			                        <h6 class="card-title">
-			                        	<a href="#"><c:out value="${album.titre }" /></a>
+			                        	<a href="#" data-toggle="modal" data-target="#modal-<c:out value="${ album.id }" />"><c:out value="${album.titre }" /></a>
 			                        </h6>
 			                        <p class="text-muted card-text"><c:out value="${album.description }" /></p>
 			                    </div>
+					        	<!-- Modal -->
+								<div id="modal-<c:out value="${ album.id }" />" class="modal fade" role="dialog">
+								  <div class="modal-dialog">
+								
+								    <!-- Modal content-->
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <button type="button" class="close" data-dismiss="modal">&times;</button>
+								        <h4 class="modal-title">Informations de l'album</h4>
+								      </div>
+								      <div class="modal-body">
+								      	<table class="table table-striped">
+								      		<tr>
+								      			<th>Titre</th>
+								      			<th>Description</th>
+								      			<th>Statut</th>
+								      			<th>Propriétaire</th>
+								      			<th>Date de création</th>
+								      			<th>Images</th>
+								      		</tr>
+								      		<tr>
+								      			<td><c:out value="${ album.titre }" /></td>
+								      			<td><c:out value="${ album.description }" /></td>
+								      			<td><c:out value="${ album.statut == 'publik' ? 'Public' : 'Privé' }" /></td>
+								      			<td><c:out value="${ album.proprio.prenom } ${ album.proprio.nom }" /></td>
+								      			<td><c:out value="${ album.proprio.createdAt }"/></td>
+								      			<td><c:out value="${ album.images.size() }"/></td>
+								      		</tr>
+								      	</table>
+								      </div>
+								      <div class="modal-footer">
+								        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								      </div>
+								    </div>
+								
+								  </div>
+								</div>
 							</div>
 			        	</div>
 	        		</c:forEach>
@@ -72,13 +109,6 @@
 	<script type="text/javascript" src="<c:url value="/staticfiles/js/baguetteBox.min.js"/>"></script>
     <script>
         baguetteBox.run('.cards-gallery', { animation: 'slideIn'});
-        /*
-        var albums = document.getElementsByClassName('sup');
-        albums.map(album => {
-        	album.addEventListener('click', event => {
-        		if(!confirm('Voulez-'))
-        	})
-        })*/
     </script>
 </body>
 </html>

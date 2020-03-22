@@ -10,7 +10,7 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
-  <!-- Renseignez ici le chemin complet vers le dossier "WebContent/uploads"  -->
+  <!-- Renseignez ici le chemin complet vers le repertoire 'uploads' dans WebContent -->
   <context-param>
   	<param-name>uploadDirectory</param-name>
   	<param-value>/home/papihack/eclipse-workspace/JavaWeb/SeneGalleriePhoto/WebContent/uploads</param-value>

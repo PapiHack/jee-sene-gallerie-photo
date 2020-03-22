@@ -1,5 +1,7 @@
 package sn.sgp.managers;
 
+import java.io.File;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,6 +25,26 @@ public class ImageManager
 	public void add(Image image)
 	{
 		this.em.persist(image);
+	}
+	
+	public void remove(Image image, String uplodaDirectory)
+	{
+		this.removeImageFile(uplodaDirectory, image);
+		this.em.remove(image);
+	}
+	
+	public void update(Image image)
+	{
+		this.em.merge(image);
+	}
+	
+	private void removeImageFile(String path, Image img)
+	{
+		File imgFile = new File(path + "/" + img.getFichierImage());
+		if (imgFile.exists())
+		{
+			imgFile.delete();
+		}
 	}
 	
 }

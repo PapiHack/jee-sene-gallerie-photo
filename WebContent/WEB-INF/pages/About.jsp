@@ -17,9 +17,14 @@
 			<div class="col-lg-12 jumbotron">
 				<h1>A propos de cette application.</h1>
 				<p>
-					Cette petite application permet d'éffectuer des opérations de type
-					CRUD (Create Read Update Delete) afin d'enregistrer, lister et / ou modifier
-					des clients.
+					Cette petite application baptisé <strong>#SenGalleriePhoto</strong> permet le partage d'album photo entre ses différents utilisateurs.
+					Ces utilisateurs sont de deux (2) types : <strong>Administrateur</strong> et <strong>Simple utilisateur</strong>.
+					On distingue également les visiteurs de la plateforme qui ont la possibilité de consulter les albums définit comme
+					étant public et de visualiser les photos de ce dernier. Afin de créer et gérer ses albums, il devra s'inscrire.
+					L'administrateur gére les utilisateurs, mais peut également créer et partager des albums comme les utilisateurs simples disposant d'un compte.
+					Lors de la création d'un album, son propriétaire peut définir ce dernier comme étant public ou privé. S'il est public, 
+					tout le monde pourra y accéder y compris les visiteurs non inscrit. Cependant, s'il est privé seul les utilisateurs autorisés à y
+					accéder peuvent le visualiser. 
 				</p>
 					<p><strong>Stack Technique :</strong></p>
 					<ul>
@@ -31,16 +36,18 @@
 					<p><strong>Architecture Technique :</strong></p>
 					<div class="panel panel-danger">
 					  <!-- Default panel contents -->
-					  <div class="panel-heading">Tableau descriptif de l'architecture technique de l'application</div>
+					  <div class="panel-heading">
+					  	<h3>Tableau descriptif de l'architecture technique de l'application</h3>
+					  </div>
 					
 					  <!-- Table -->
 					  <table class="table table-striped table-bordered">
 					  	<tr>
-					  		<th><p>Package</p></th>
-					  		<th><p>Description</p></th>
+					  		<th><p><strong>Package</strong></p></th>
+					  		<th><p><strong>Description</strong></p></th>
 					  	</tr>
 					  	<tr>
-					  		<td><p><strong><i>meissa.beans</i></strong></p></td>
+					  		<td><p><strong><i>sn.sgp.beans</i></strong></p></td>
 					  		<td>
 					  			<p>
 					  				Contient les beans ou entités également appelé classe métier 
@@ -49,7 +56,7 @@
 					  		</td>
 					  	</tr>
 					  	<tr>
-					  		<td><p><strong><i>meissa.managers</i></strong></p></td>
+					  		<td><p><strong><i>sn.sgp.managers</i></strong></p></td>
 					  		<td>
 						  		<p>
 						  			Correspond à la couche <strong>DAO</strong> de l'application et contient les 
@@ -59,20 +66,39 @@
 							</td>
 					  	</tr>
 					  	<tr>
-					  		<td><p><strong><i>meissa.metier</i></strong></p></td>
+					  		<td><p><strong><i>sn.sgp.validators</i></strong></p></td>
 					  		<td>
 						  		<p>
-						  			Correspond à la couche métier et contient dans notre cas une classe 
-						  			permettant de vérifier la validité des données des entitiés.
+						  			Correspond à la couche métier et contient dans notre cas des classes 
+						  			permettant de vérifier la validité des entitiés.
 						  		</p>
 					  		</td>
 					  	</tr>
 					  	<tr>
-					  		<td><p><strong><i>meissa.servlets</i></strong></p></td>
+					  		<td><p><strong><i>sn.sgp.servlets</i></strong></p></td>
 					  		<td>
 					  			<p>
 					  				Contient les servlets de l'application et font office de controller. 
 					  				Ce package correspond à la couche  <strong>Controller</strong>.
+					  			</p>
+					  		</td>
+					  	</tr>
+					  	<tr>
+					  		<td><p><strong><i>sn.sgp.utils</i></strong></p></td>
+					  		<td>
+					  			<p>
+					  				Contient quelques classes utilitaires facilitant le développement tout en me permettant
+					  				de dupliquer du code unitilement. 
+					  			</p>
+					  		</td>
+					  	</tr>
+					  	<tr>
+					  		<td><p><strong><i>sn.sgp.filters</i></strong></p></td>
+					  		<td>
+					  			<p>
+					  				Contient des filtres qui sont des sortes de <strong>middleware</strong> permettant d'effectuer des
+					  				opérations entre la requête et la réponse. C'est là où je définis certaintes restrictions quant aux accés
+					  				à certaines ressources. 
 					  			</p>
 					  		</td>
 					  	</tr>

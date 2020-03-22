@@ -11,7 +11,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<c:url value="/home"/>">Sène Gallerie Photo (SGP)</a>
+      <a class="navbar-brand" href="<c:url value="/home"/>">Sen Gallerie Photo (SGP)</a>
     </div>
 	
 	<c:set var="path" value="${ path }" scope="request" />

@@ -28,6 +28,11 @@ public class AlbumManager
 	@PersistenceContext(name = "sgp_pu")
 	private EntityManager em;
 	
+	public Album findById(Long id)
+	{
+		return this.em.find(Album.class, id);
+	}
+	
 	public void add(Album album)
 	{
 		this.em.persist(album);
@@ -41,7 +46,7 @@ public class AlbumManager
 	public void deleteById(Long id, HttpServletRequest request)
 	{
 		Album album = this.em.find(Album.class, id);
-		String uploadDirectory = "/uploads";// request.getServletContext().getRealPath("/uploads");
+		String uploadDirectory = request.getServletContext().getInitParameter("uploadDirectory");
 		this.removeImagesOnDeleteAlbum(album, uploadDirectory);
 		this.em.remove(album);
 	}
@@ -85,7 +90,6 @@ public class AlbumManager
 	
 	public List<Album> getAccessibleAlbums(User user)
 	{
-		System.out.println("user -------- " + user.getId());
 		List<Album> albums = this.findAlbumByStatus(EnumAlbumStatus.privé);
 		List<Album> accessibleAlbums = new ArrayList<Album>();
 		for (Album album : albums)

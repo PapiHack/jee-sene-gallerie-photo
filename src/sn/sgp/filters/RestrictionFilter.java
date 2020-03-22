@@ -31,7 +31,6 @@ public class RestrictionFilter implements Filter
 	 */
 	public RestrictionFilter()
 	{
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**
@@ -39,7 +38,6 @@ public class RestrictionFilter implements Filter
 	 */
 	public void destroy()
 	{
-		// TODO Auto-generated method stub
 	}
 	
 	/**

@@ -27,7 +27,10 @@ import sn.sgp.utils.UploadImage;
 import sn.sgp.validators.AlbumValidator;
 
 /**
- * Servlet implementation class AlbumController
+ * @author papihack
+ * @version 0.0.1
+ * 
+ *          Servlet permettant de gérer la gestion des albums.
  */
 @SuppressWarnings("serial")
 @WebServlet(
@@ -48,19 +51,6 @@ public class AlbumController extends HttpServlet
 	@EJB
 	private UserManager userManager;
 	
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public AlbumController()
-	{
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		String path = request.getServletPath();
@@ -103,14 +93,9 @@ public class AlbumController extends HttpServlet
 					response.sendRedirect(request.getContextPath() + USER_ALBUM_URL);
 				}
 				break;
-			
 		}
 	}
 	
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		String path = request.getServletPath();
@@ -192,8 +177,6 @@ public class AlbumController extends HttpServlet
 					jsonBuilder.add("description", description);
 					jsonBuilder.add("statut", statut);
 					data = jsonBuilder.build();
-					// jsonBuilder.add("data", data);
-					// response.getWriter().print(jsonBuilder.build());
 					for (String key : result.keySet())
 					{
 						jsonBuilder.add(key, result.get(key));

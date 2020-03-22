@@ -39,6 +39,8 @@ public class UploadImage
 		// String uploadDirectory = new File(upload).getAbsolutePath();
 		String uploadDirectory = this.request.getServletContext().getInitParameter("uploadDirectory");
 		File directory = new File(uploadDirectory);
+		// System.out.println("UPLOAD FOLDER PATH ========== " +
+		// directory.getAbsolutePath());
 		if (!directory.exists())
 		{
 			directory.mkdir();

@@ -31,7 +31,7 @@ public class Image extends InheritColumns implements Serializable
 	private String hauteur;
 	private String largeur;
 	@OneToMany(mappedBy = "image", cascade =
-	{ CascadeType.MERGE })
+	{ CascadeType.MERGE, CascadeType.PERSIST })
 	private Set<Tag> tags;
 	private String fichierImage;
 	
