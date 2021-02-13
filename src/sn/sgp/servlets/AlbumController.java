@@ -42,6 +42,7 @@ public class AlbumController extends HttpServlet
 	
 	private static final String LIST_ALBUM_PAGE = "/WEB-INF/pages/UserAlbums.jsp";
 	private static final String ADD_ALBUM_PAGE = "/WEB-INF/pages/AddAlbum.jsp";
+	private static final String EDIT_ALBUM_PAGE = "/WEB-INF/pages/EditAlbum.jsp";
 	private static final String GALLERY_PAGE = "/WEB-INF/pages/Gallery.jsp";
 	private static final String USER_ALBUM_URL = "/user/albums";
 	
@@ -55,6 +56,8 @@ public class AlbumController extends HttpServlet
 	{
 		String path = request.getServletPath();
 		request.setAttribute("path", path);
+		String albumId;
+		List<User> users;
 		this.cookieManager = new CookieManager(request, response);
 		User user = ((User) request.getSession().getAttribute("user")).getCompte().getUser();
 		switch (path)
@@ -62,26 +65,66 @@ public class AlbumController extends HttpServlet
 			case "/user/albums":
 				request.setAttribute("albums", this.albumManager.findUserAlbum(user));
 				request.setAttribute("deleteAlbum", this.cookieManager.getCookieValue("deleteAlbum"));
+				request.setAttribute("albumEdit", this.cookieManager.getCookieValue("albumEdit"));
+				request.setAttribute("deleteImg", this.cookieManager.getCookieValue("deleteImg"));
 				request.getServletContext().getRequestDispatcher(LIST_ALBUM_PAGE).forward(request, response);
 				break;
 			case "/user/gallery":
 				// recupérer la liste des albums publics (et privés dont il a accés) et la
 				// transmettre à la vue !
 				List<Album> albums = this.albumManager.findAlbumByStatus(EnumAlbumStatus.publik);
-				System.out
-						.println("SiZE albumAccessible ======== " + this.albumManager.getAccessibleAlbums(user).size());
+				// System.out
+				// .println("SiZE albumAccessible ======== " +
+				// this.albumManager.getAccessibleAlbums(user).size());
 				albums.addAll(this.albumManager.getAccessibleAlbums(user));
 				request.setAttribute("albums", albums);
 				request.getServletContext().getRequestDispatcher(GALLERY_PAGE).forward(request, response);
 				break;
 			case "/user/album/add":
 				request.setAttribute("update", "add");
-				List<User> users = this.userManager.findUsersWithout(user.getEmail());
+				users = this.userManager.findUsersWithout(user.getEmail());
 				request.setAttribute("users", users);
 				request.getServletContext().getRequestDispatcher(ADD_ALBUM_PAGE).forward(request, response);
 				break;
+			case "/user/album/update":
+				request.setAttribute("update", "update");
+				albumId = request.getParameter("album");
+				if (albumId == null || albumId.isEmpty())
+				{
+					response.sendRedirect(request.getContextPath() + USER_ALBUM_URL);
+				}
+				else
+				{
+					HashMap<String, String> form = new HashMap<String, String>();
+					Album album = this.albumManager.findById(Long.parseLong(albumId));
+					form.put("titre", album.getTitre());
+					form.put("description", album.getDescription());
+					form.put("statut", album.getStatut().toString() == "publik" ? "public" : "privé");
+					users = this.userManager.findUsersWithout(user.getEmail());
+					if (album.getSharedWith().size() != 0)
+					{
+						request.setAttribute("usersAuth", album.getSharedWith());
+						List<User> otherUser = new ArrayList<User>();
+						for (User u : users)
+						{
+							if (!album.getSharedWith().contains(u))
+							{
+								otherUser.add(u);
+							}
+						}
+						request.setAttribute("otherUsers", otherUser);
+					}
+					else
+					{
+						request.setAttribute("users", users);
+					}
+					request.setAttribute("album", album);
+					request.setAttribute("form", form);
+					request.getServletContext().getRequestDispatcher(EDIT_ALBUM_PAGE).forward(request, response);
+				}
+				break;
 			case "/user/album/delete":
-				String albumId = request.getParameter("album");
+				albumId = request.getParameter("album");
 				if (albumId == null || albumId.isEmpty())
 				{
 					response.sendRedirect(request.getContextPath() + USER_ALBUM_URL);
@@ -113,6 +156,7 @@ public class AlbumController extends HttpServlet
 		String titre;
 		String statut;
 		String usersSharedWith;
+		this.cookieManager = new CookieManager(request, response);
 		switch (path)
 		{
 			case "/user/album/add":
@@ -182,10 +226,51 @@ public class AlbumController extends HttpServlet
 						jsonBuilder.add(key, result.get(key));
 					}
 					errors = jsonBuilder.build();
-					// jsonBuilder.add("errors", errors);
 					response.getWriter().print(jsonBuilder.add("data", data).add("errors", errors).build());
-					// request.getServletContext().getRequestDispatcher(ADD_ALBUM_PAGE).forward(request,
-					// response);
+				}
+				break;
+			case "/user/album/update":
+				request.setAttribute("update", "update");
+				String albumId = request.getParameter("albumId");
+				Album album = this.albumManager.findById(Long.parseLong(albumId));
+				titre = request.getParameter("titre");
+				description = request.getParameter("description");
+				statut = request.getParameter("statut");
+				usersSharedWith = request.getParameter("users");
+				albumValidator = new AlbumValidator(request);
+				result = albumValidator.validate();
+				if (result.isEmpty())
+				{
+					album.setTitre(titre);
+					album.setDescription(description);
+					EnumAlbumStatus albumStatus = "public".equals(statut) ? EnumAlbumStatus.publik
+							: EnumAlbumStatus.privé;
+					album.setStatut(albumStatus);
+					if (statut == "privé")
+					{
+						List<User> newUsersShared = new ArrayList<User>();
+						String[] usersId = usersSharedWith.split(",");
+						for (String userId : usersId)
+						{
+							newUsersShared.add(this.userManager.findUserById(Long.parseLong(userId)));
+						}
+						album.setSharedWith(newUsersShared);
+					}
+					this.albumManager.update(album);
+					this.cookieManager = new CookieManager(request, response);
+					this.cookieManager.createCookie("albumEdit", "Edition de l'album: OK", 10);
+					response.sendRedirect(request.getContextPath() + USER_ALBUM_URL);
+				}
+				else
+				{
+					form.put("titre", titre);
+					form.put("description", description);
+					form.put("statut", album.getStatut().toString() == "publik" ? "public" : "privé");
+					request.setAttribute("form", form);
+					request.setAttribute("album", album);
+					request.setAttribute("errors", result);
+					request.setAttribute("usersAuth", album.getSharedWith());
+					request.getServletContext().getRequestDispatcher(EDIT_ALBUM_PAGE).forward(request, response);
 				}
 				break;
 		}

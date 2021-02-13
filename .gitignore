@@ -1,2 +1,5 @@
 *.class
-build/sn/*
+build/
+.classpath
+.settings
+.project

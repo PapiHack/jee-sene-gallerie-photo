@@ -28,7 +28,7 @@ public class CompteManager
 		{
 			compte = (Compte) this.em.createNamedQuery("getCompteByLogin").setParameter("compteLogin", login)
 					.getSingleResult();
-			System.out.println("Compte => " + compte.getLogin());
+			// System.out.println("Compte => " + compte.getLogin());
 		} catch (NoResultException e)
 		{
 			System.out.println("Compte with " + login + " does not exist !");

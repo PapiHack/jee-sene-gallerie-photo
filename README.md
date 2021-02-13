@@ -1,4 +1,4 @@
-# Sène Gallerie Photo
+# Sen Gallerie Photo
 
 Petite application de partage d'albums photo dans le cadre de mon cours de JEE. Il est possible de visiter la gallerie afin de visualiser les albums photo définis comme étant public. Quant aux albums privés, seul les utilisateurs autorisés peuvent les voir. 
 Les utilisateurs sont de deux types : 
@@ -38,9 +38,16 @@ Contient des classes faisant office de validateurs des formulaires de l'applicat
 
 ## Notes  
 
-A la racine du projet se trouve un script sql nommé `create_database.script.sql` permettant de créer une base de donnée nommée `db_sgp` ainsi que les tables permettant de stocker les informations des différentes entités de l'application.
+A la racine du projet se trouve un script sql nommé `create_database.script.sql` permettant de créer une base de donnée nommée `db_sgp`. Les tables permettant de stocker les informations des différentes entités de l'application seront automatiquement créées au démarrage de l'application.
+
+Veuillez renseigner également le chemin complet vers le repertoire où vous voudriez que les images soient stockées au niveau du fichier `WebContent/WEB-INF/web.xml` à travers le paramètre `uploadDirectory`.
 
 ### Entrée de l'application  
 
 Aprés avoir lancé le script permettant de mettre en place la base de donnée et démarré l'application, vous vous rendrez au niveau de l'url suivante afin d'accéder à cette dernière :  
 `http://localhost:8080/SeneGalleriePhoto/home`
+
+## Auteur
+
+- [M.B.C.M](https://itdev.sn)
+[![My Twitter Link](https://img.shields.io/twitter/follow/the_it_dev?style=social)](https://twitter.com/the_it_dev)

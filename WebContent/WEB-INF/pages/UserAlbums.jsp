@@ -23,10 +23,16 @@
 				<h4> <c:out value="${ deleteAlbum }"></c:out> </h4>
 			</div>
 		</c:if>
-		<c:if test="${ updateAlbum != null }">
+		<c:if test="${ albumEdit != null }">
 			<div class="col-md-offset-2 alert alert-warning alert-dismissable col-md-8">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
-				<h4> <c:out value="${ updateAlbum }"></c:out> </h4>
+				<h4> <c:out value="${ albumEdit }"></c:out> </h4>
+			</div>
+		</c:if>
+		<c:if test="${ deleteImg != null }">
+			<div class="col-md-offset-2 alert alert-warning alert-dismissable col-md-8">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<h4> <c:out value="${ deleteImg }"></c:out> </h4>
 			</div>
 		</c:if>
 	        <div class="heading">
@@ -49,7 +55,7 @@
 			                    <div class="card-body">
 			                    	<p class="pull-right">
 			                        	<a href="<c:url value="/user/album/image/add?album=${ album.id }" />" class="btn btn-success" title="Ajouter une image à cet album"><i class="fa fa-plus fa fa-image"></i></a>
-			                        	<a href="#" class="btn btn-warning" title="Editer cet album"><i class="fa fa-edit"></i></a>
+			                        	<a href="<c:url value="/user/album/update?album=${ album.id }" />" class="btn btn-warning" title="Editer cet album"><i class="fa fa-edit"></i></a>
 			                        	<a href="<c:url value="/user/album/delete?album=${ album.id }" />" onclick="return confirm('Voulez-vous vraiment supprimer cet album ?');" class="btn btn-danger sup" title="Supprimer cet album"><i class="fa fa-trash"></i></a>
 			                        </p>
 			                        <h6 class="card-title">
@@ -57,6 +63,8 @@
 			                        </h6>
 			                        <p class="text-muted card-text"><c:out value="${album.description }" /></p>
 			                    </div>
+							</div>
+			        	</div>
 					        	<!-- Modal -->
 								<div id="modal-<c:out value="${ album.id }" />" class="modal fade" role="dialog">
 								  <div class="modal-dialog">
@@ -94,8 +102,6 @@
 								
 								  </div>
 								</div>
-							</div>
-			        	</div>
 	        		</c:forEach>
 	        	</div>
 	        </c:if>

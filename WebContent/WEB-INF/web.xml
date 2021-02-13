@@ -13,6 +13,6 @@
   <!-- Renseignez ici le chemin complet vers le repertoire 'uploads' dans WebContent -->
   <context-param>
   	<param-name>uploadDirectory</param-name>
-  	<param-value>/home/papihack/eclipse-workspace/JavaWeb/SeneGalleriePhoto/WebContent/uploads</param-value>
+  	<param-value>/home/papihack/uploads</param-value>
   </context-param>
 </web-app>

@@ -148,7 +148,7 @@ public class HomeController extends HttpServlet
 				if (loginValidator.validate())
 				{
 					user = this.compteManager.findUserByLogin(username).getUser();
-					System.out.println("USER ========== " + user);
+					// System.out.println("USER ========== " + user);
 					System.out.println("User with email address " + user.getEmail() + " and " + user.getStatut()
 							+ " status connected !");
 					request.getSession().setAttribute("user", user);

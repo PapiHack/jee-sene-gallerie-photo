@@ -51,8 +51,11 @@ public class ImageController extends HttpServlet
 		String path = request.getServletPath();
 		request.setAttribute("path", path);
 		this.cookieManager = new CookieManager(request, response);
+		HashMap<String, String> form = new HashMap<String, String>();
 		Album album;
 		String albumId;
+		String imageId;
+		Image img;
 		switch (path)
 		{
 			case "/user/album/image/add":
@@ -69,8 +72,35 @@ public class ImageController extends HttpServlet
 				break;
 			case "/user/album/image/update":
 				request.setAttribute("update", "update");
+				imageId = request.getParameter("image");
+				if (imageId == null || imageId.isEmpty())
+				{
+					response.sendRedirect(request.getContextPath() + USER_ALBUM_URL);
+				}
+				img = this.imageManager.findById(Long.parseLong(imageId));
+				form.put("hauteur", img.getLargeur());
+				form.put("largeur", img.getLargeur());
+				form.put("titre", img.getTitre());
+				form.put("description", img.getDescription());
+				request.setAttribute("form", form);
+				request.getServletContext().getRequestDispatcher(ADD_IMAGE_PAGE).forward(request, response);
 				break;
 			case "/user/album/image/delete":
+				imageId = request.getParameter("image");
+				if (imageId == null || imageId.isEmpty())
+				{
+					response.sendRedirect(request.getContextPath() + USER_ALBUM_URL);
+				}
+				/*
+				 * img = this.imageManager.findById(Long.parseLong(imageId));
+				 * System.out.println( "UPLOAD DIRECTORY ----- " +
+				 * request.getServletContext().getInitParameter("uploadDirectory"));
+				 * this.imageManager.delete(img,
+				 * request.getServletContext().getInitParameter("uploadDirectory"));
+				 */
+				this.imageManager.deleteById(Long.parseLong(imageId), request);
+				this.cookieManager.createCookie("deleteImg", "Suppression de l'image : OK", 10);
+				response.sendRedirect(request.getContextPath() + USER_ALBUM_URL);
 				break;
 			case "/user/album/images":
 				albumId = request.getParameter("album");

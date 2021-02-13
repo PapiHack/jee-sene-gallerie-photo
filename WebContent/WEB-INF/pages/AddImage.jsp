@@ -74,6 +74,9 @@
 			                    <button type="submit" id="btnSubmit" class="btn btn-success btn-md"><c:out value="${ requestScope.update == 'update' ? 'Editer' : 'Ajouter' }"/></button>
 			                </div>
 			                    <input type="hidden" id="albumId" name="albumId" value="${ requestScope.albumId }" />
+			                    <c:if test="${ requestScope.update == 'update' }">
+			                    	<input type="hidden" id="imageId" name="imageId" value="${ image.id }" />
+			                    </c:if>
             			</form>
 					</div>
 				</div>
